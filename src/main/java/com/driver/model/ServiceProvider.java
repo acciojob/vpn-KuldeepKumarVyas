@@ -13,17 +13,18 @@ public class ServiceProvider {
 
     @ManyToOne
     @JoinColumn
-    Admin admin;
+    private Admin admin;
 
     @OneToMany(mappedBy = "serviceProvider", cascade = CascadeType.ALL)
-    List<Country> countryList;
+    private List<Country> countryList;
 
     @ManyToMany(mappedBy = "serviceProviderList", cascade = CascadeType.ALL)
-    List<User> users;
+    private List<User> users;
 
     @OneToMany(mappedBy = "serviceProvider", cascade = CascadeType.ALL)
-    List<Connection> connectionList;
+    private List<Connection> connectionList;
 
+    // Getters and Setters
     public int getId() {
         return id;
     }

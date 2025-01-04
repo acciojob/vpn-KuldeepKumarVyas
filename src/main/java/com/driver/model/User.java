@@ -12,19 +12,23 @@ public class User {
     private String username;
     private String password;
     private String originalIp;
-    private Boolean connected;
+    private Boolean connected = false;
     private String maskedIp;
 
-    @JoinColumn
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_service_providers",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "service_provider_id"))
     private List<ServiceProvider> serviceProviderList;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Country originalCountry; //This field remains unaffected even when vpn connection is made
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "original_country_id")
+    private Country originalCountry; // This field remains unaffected even when VPN connection is made.
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Connection> connectionList;
 
+    // Getters and Setters
     public int getId() {
         return id;
     }

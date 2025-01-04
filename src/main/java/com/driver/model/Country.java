@@ -15,11 +15,10 @@ public class Country {
     @JoinColumn
     private ServiceProvider serviceProvider;
 
-    @OneToOne(mappedBy = "originalCountry")
+    @OneToOne(mappedBy = "originalCountry", cascade = CascadeType.ALL)
     private User user;
 
     // Getters and Setters
-
     public int getId() {
         return id;
     }

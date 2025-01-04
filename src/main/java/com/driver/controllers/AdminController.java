@@ -15,25 +15,23 @@ public class AdminController {
     AdminServiceImpl adminService;
 
     @PostMapping("/register")
-    public ResponseEntity<Void> registerAdmin(@RequestParam String username, @RequestParam String password){
-        //create an admin and return
+    public ResponseEntity<Admin> registerAdmin(@RequestParam String username, @RequestParam String password) {
+        // Create an admin and return
         Admin admin = adminService.register(username, password);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(admin, HttpStatus.OK);
     }
 
     @PostMapping("/addProvider")
-    public ResponseEntity<Void> addServiceProvider(@RequestParam int adminId, @RequestParam String providerName){
-        //add a serviceProvider under the admin and return updated admin
+    public ResponseEntity<Admin> addServiceProvider(@RequestParam int adminId, @RequestParam String providerName) {
+        // Add a service provider under the admin and return updated admin
         Admin admin = adminService.addServiceProvider(adminId, providerName);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(admin, HttpStatus.OK);
     }
 
     @PostMapping("/addCountry")
-    public ResponseEntity<Void> addCountry(@RequestParam int serviceProviderId, @RequestParam String countryName) throws Exception{
-        //add a country under the serviceProvider and return respective service provider
-        //country name would be a 3-character string out of ind, aus, usa, chi, jpn. Each character can be in uppercase or lowercase. You should create a new Country object based on the given country name and add it to the country list of the service provider. Note that the user attribute of the country in this case would be null.
-        //In case country name is not amongst the above mentioned strings, throw "Country not found" exception
+    public ResponseEntity<ServiceProvider> addCountry(@RequestParam int serviceProviderId, @RequestParam String countryName) throws Exception {
+        // Add a country under the service provider and return respective service provider
         ServiceProvider serviceProvider = adminService.addCountry(serviceProviderId, countryName);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(serviceProvider, HttpStatus.OK);
     }
 }
