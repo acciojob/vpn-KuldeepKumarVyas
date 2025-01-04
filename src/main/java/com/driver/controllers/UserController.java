@@ -13,13 +13,15 @@ public class UserController {
     @Autowired
     UserServiceImpl userService;
 
-    @PostMapping("/register")
+    // Endpoint: registerUser
+    @PostMapping("/registerUser")
     public ResponseEntity<User> registerUser(@RequestParam String username, @RequestParam String password, @RequestParam String countryName) throws Exception {
         // Create a user of the given country
         User user = userService.register(username, password, countryName);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    // Endpoint: subscribe
     @PutMapping("/subscribe")
     public ResponseEntity<User> subscribe(@RequestParam Integer userId, @RequestParam Integer serviceProviderId) {
         // Subscribe the user to a service provider

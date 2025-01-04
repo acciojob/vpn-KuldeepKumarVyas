@@ -11,27 +11,42 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
+
     @Autowired
     AdminServiceImpl adminService;
 
-    @PostMapping("/register")
+    // Register Admin endpoint
+    @PostMapping("/registerAdmin")
     public ResponseEntity<Admin> registerAdmin(@RequestParam String username, @RequestParam String password) {
-        // Create an admin and return
-        Admin admin = adminService.register(username, password);
-        return new ResponseEntity<>(admin, HttpStatus.OK);
+        try {
+            Admin admin = adminService.register(username, password);
+            return new ResponseEntity<>(admin, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @PostMapping("/addProvider")
+    // Add Service Provider endpoint
+    @PostMapping("/addServiceProvider")
     public ResponseEntity<Admin> addServiceProvider(@RequestParam int adminId, @RequestParam String providerName) {
-        // Add a service provider under the admin and return updated admin
-        Admin admin = adminService.addServiceProvider(adminId, providerName);
-        return new ResponseEntity<>(admin, HttpStatus.OK);
+        try {
+            Admin admin = adminService.addServiceProvider(adminId, providerName);
+            return new ResponseEntity<>(admin, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
     }
 
+    // Add Country endpoint
     @PostMapping("/addCountry")
-    public ResponseEntity<ServiceProvider> addCountry(@RequestParam int serviceProviderId, @RequestParam String countryName) throws Exception {
-        // Add a country under the service provider and return respective service provider
-        ServiceProvider serviceProvider = adminService.addCountry(serviceProviderId, countryName);
-        return new ResponseEntity<>(serviceProvider, HttpStatus.OK);
+    public ResponseEntity<ServiceProvider> addCountry(@RequestParam int serviceProviderId, @RequestParam String countryName) {
+        try {
+            ServiceProvider serviceProvider = adminService.addCountry(serviceProviderId, countryName);
+            return new ResponseEntity<>(serviceProvider, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
